@@ -95,7 +95,7 @@ section { padding: 80px 0; }
 
 /* ── HERO ── */
 .hero { padding: 72px 0 80px; border-bottom: 1px solid var(--border); }
-.hero__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.hero__inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
 .tag { display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-h);
   font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--cyan); margin-bottom: 20px; }
@@ -106,15 +106,111 @@ section { padding: 80px 0; }
 }
 .hero__title em { font-style: normal; color: var(--cyan); }
 .hero__desc { font-size: 0.97rem; color: var(--muted); line-height: 1.75; max-width: 440px; }
-.hero__img-wrap {
-  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
-  background: var(--navy2); aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-}
 .hero__facts { display: flex; gap: 0; margin-top: 44px; padding-top: 36px; border-top: 1px solid var(--border); }
 .fact { flex: 1; padding-right: 24px; }
 .fact + .fact { padding-left: 24px; border-left: 1px solid var(--border); }
 .fact__num { font-family: var(--f-h); font-size: 1.9rem; font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1; }
 .fact__label { font-size: 0.75rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 4px; }
+
+/* ── HERO VIDEO — profesional ── */
+.hero__video-wrap {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--navy3);
+  aspect-ratio: 16/9;
+  width: 100%;
+  cursor: pointer;
+}
+.hero__video-wrap video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay oscuro que aparece en hover */
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 21, 32, 0);
+  transition: background 0.3s ease;
+  pointer-events: none;
+}
+.hero__video-wrap:hover .video-overlay {
+  background: rgba(12, 21, 32, 0.25);
+}
+
+/* Botón de sonido — centrado, aparece en hover */
+.sound-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.hero__video-wrap:hover .sound-btn {
+  opacity: 1;
+}
+/* cuando ya está con sonido, el botón es pequeño abajo */
+.hero__video-wrap.has-sound .sound-btn {
+  inset: auto;
+  bottom: 14px;
+  right: 14px;
+  display: flex;
+  opacity: 1;
+}
+
+.sound-btn__pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(12, 21, 32, 0.82);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50px;
+  padding: 10px 20px;
+  color: var(--white);
+  font-family: var(--f-h);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, border-color 0.2s;
+  pointer-events: all;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+.sound-btn__pill:hover {
+  background: rgba(0, 196, 220, 0.85);
+  color: var(--navy);
+}
+.sound-btn__pill svg {
+  width: 15px; height: 15px; flex-shrink: 0;
+}
+
+/* estado: con sonido activo — pill pequeña esquina */
+.hero__video-wrap.has-sound .sound-btn {
+  inset: auto;
+  bottom: 14px;
+  right: 14px;
+  opacity: 1;
+  pointer-events: all;
+}
+.hero__video-wrap.has-sound .sound-btn__pill {
+  padding: 7px 14px;
+  font-size: 0.68rem;
+  background: rgba(0, 196, 220, 0.15);
+  border: 1px solid rgba(0, 196, 220, 0.3);
+  color: var(--cyan);
+}
+.hero__video-wrap.has-sound .sound-btn__pill:hover {
+  background: rgba(0, 196, 220, 0.3);
+}
 
 /* ── VIDEO — SECCIÓN PRINCIPAL ── */
 #video { background: var(--navy2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -254,8 +350,8 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .hero__inner { grid-template-columns: 1fr; gap: 40px; }
-  .hero__img-wrap { max-width: 320px; }
+  .hero__inner { grid-template-columns: 1fr; gap: 36px; }
+  .hero__video-wrap { max-width: 540px; margin: 0 auto; }
   .que-grid { grid-template-columns: 1fr; gap: 40px; }
   .comp-grid { grid-template-columns: repeat(2, 1fr); }
   .gallery { grid-template-columns: repeat(2, 1fr); }
@@ -339,9 +435,34 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
         </p>
       
       </div>
-      <div class="hero__img-wrap">
-        <img style="width: 500px;" src="assets/img/logo.png" alt="">
-        
+      <!-- VIDEO EN EL HERO: silencioso en autoplay, botón profesional para activar audio -->
+      <div class="hero__video-wrap" id="heroVideoWrap">
+        <video
+          id="heroVideo"
+          src="assets/img/video-tutor-bot.mp4"
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster="assets/img/logo.png"
+        ></video>
+
+        <!-- Overlay oscuro sutil en hover -->
+        <div class="video-overlay"></div>
+
+        <!-- Botón de sonido — centrado al hacer hover, pequeño en esquina al activar -->
+        <div class="sound-btn" id="soundBtn">
+          <button class="sound-btn__pill" id="soundPill" onclick="toggleSound()">
+            <!-- Ícono speaker muted -->
+            <svg id="soundIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+            <span id="soundLabel">Activar sonido</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -349,30 +470,28 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
 
 <div class="divider"></div>
 
-<!-- ═══ VIDEO — PRIMERO, CON JERARQUÍA ══════════════════════ -->
+<!-- ═══ VIDEO COMPLETO — sección dedicada con heading ═══════ -->
 <section id="video">
   <div class="wrap">
+    <div class="sh">
+      <div class="sh__eye">Demostración</div>
+      <h2 class="sh__title">Video del proyecto</h2>
+      <p class="sh__sub">Mira TUTOR-BOT en acción: cómo interactúa con el estudiante, su sistema de audio y el proceso de aprendizaje progresivo.</p>
+    </div>
     <div class="video-wrap">
-      
-    <div class="video-ph">
-  <div class="video-ph__btn">
-    <svg><use href="#ic-play"/></svg>
-  </div>
-  <div class="video-ph__text">
-    <video 
-      src="assets/img/video-tutor-bot.mp4"
-      width="1920"
-      height="1080"
-      autoplay
-      loop
-      playsinline
-      preload="auto"
-      poster="tutor-bot-poster.jpg"
-      style="width:100%; height:auto; display:block;">
-    </video>
-  </div>
-</div>
-
+      <!-- Mismo video, controles visibles para que el usuario lo explore -->
+      <video
+        id="sectionVideo"
+        src="assets/img/video-tutor-bot.mp4"
+        controls
+        muted
+        loop
+        playsinline
+        preload="none"
+        poster="assets/img/logo.png"
+        style="width:100%; height:100%; object-fit:cover; display:block;"
+      ></video>
+    </div>
     <p class="video-caption">
       TUTOR-BOT · Proyecto educativo de alfabetización con robot físico y pantalla táctil, Honduras 2025.
     </p>
@@ -708,8 +827,107 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
 </footer>
 
 <script>
+  /* ── Mobile nav ── */
   function openMob()  { document.getElementById('mobMenu').classList.add('open'); }
   function closeMob() { document.getElementById('mobMenu').classList.remove('open'); }
+
+  /* ══════════════════════════════════════════════════════════
+     HERO VIDEO — comportamiento profesional
+     ─────────────────────────────────────────────────────────
+     • preload="none"  → no descarga nada al cargar la página
+     • IntersectionObserver → arranca silencioso cuando entra
+       al viewport, se pausa y silencia cuando sale
+     • Botón "Activar sonido" → único mecanismo garantizado
+       en TODOS los navegadores (Chrome, Firefox, Safari, móvil)
+       El usuario hace click → audio ON
+       Botón cambia a "Silenciar" en la esquina
+     • Click fuera del botón en el wrap → también alterna
+  ══════════════════════════════════════════════════════════ */
+  (function () {
+    const wrap   = document.getElementById('heroVideoWrap');
+    const video  = document.getElementById('heroVideo');
+    const btn    = document.getElementById('soundBtn');
+    const pill   = document.getElementById('soundPill');
+    const icon   = document.getElementById('soundIcon');
+    const label  = document.getElementById('soundLabel');
+
+    if (!video || !wrap) return;
+
+    let loaded  = false;
+    let hasSound = false;
+
+    /* ── SVG paths ── */
+    const SVG_MUTED = `
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>`;
+
+    const SVG_SOUND = `
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M19.07 4.93a10 10 0 010 14.14"/>
+      <path d="M15.54 8.46a5 5 0 010 7.07"/>`;
+
+    /* ── IntersectionObserver: lazy load + play/pause ── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!loaded) {
+            loaded = true;
+            video.load(); // empieza descarga solo cuando es visible
+          }
+          video.muted = !hasSound;
+          video.play().catch(() => {});
+        } else {
+          /* salió del viewport: pausa y silencia */
+          video.pause();
+          if (hasSound) {
+            /* silencia al salir pero recuerda el estado */
+            video.muted = true;
+          }
+        }
+      });
+    }, { threshold: 0.25 });
+
+    io.observe(video);
+
+    /* ── Botón de sonido ── */
+    function toggleSound() {
+      hasSound = !hasSound;
+      video.muted = !hasSound;
+
+      if (!video.paused) {
+        video.play().catch(() => {});
+      }
+
+      if (hasSound) {
+        /* estado: sonido activo */
+        wrap.classList.add('has-sound');
+        icon.innerHTML = SVG_SOUND;
+        label.textContent = 'Silenciar';
+      } else {
+        /* estado: silenciado */
+        wrap.classList.remove('has-sound');
+        icon.innerHTML = SVG_MUTED;
+        label.textContent = 'Activar sonido';
+      }
+    }
+
+    /* Exponer para el onclick del HTML */
+    window.toggleSound = toggleSound;
+
+    /* ── Móvil: tap en el video (no en el botón) reproduce/pausa ── */
+    wrap.addEventListener('click', function(e) {
+      /* si el click fue en el botón, toggleSound ya lo maneja */
+      if (pill && pill.contains(e.target)) return;
+      if (video.paused) {
+        video.play().catch(() => {});
+      } else {
+        /* tap en móvil fuera del botón solo silencia/desilencia */
+        toggleSound();
+      }
+    });
+
+  })();
 </script>
 
 </body>
