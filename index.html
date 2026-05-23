@@ -262,18 +262,25 @@ section { padding: 80px 0; }
   position: relative;
   margin-top: 32px;
   user-select: none;
+  /* Contiene el track — evita scroll horizontal en la página */
+  overflow: hidden;
+  /* Padding lateral para que los botones prev/next no queden cortados */
+  padding: 0 24px;
+  /* Compensa el padding para que el track ocupe el ancho correcto */
+  box-sizing: border-box;
 }
 
 .carousel__track {
   display: flex;
   gap: 12px;
-  /* El scroll es CSS puro — sin JS de posición, usa transform */
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
+  /* El track NO puede desbordarse */
+  width: 100%;
 }
 
 .carousel__slide {
-  flex: 0 0 calc(33.333% - 8px); /* 3 slides visibles en desktop */
+  flex: 0 0 calc(33.333% - 8px);
   aspect-ratio: 4/3;
   border-radius: 10px;
   overflow: hidden;
@@ -282,6 +289,8 @@ section { padding: 80px 0; }
   display: flex; align-items: center; justify-content: center;
   transition: border-color 0.2s, transform 0.2s;
   cursor: pointer;
+  /* Evita que el slide se encoja o crezca inesperadamente */
+  min-width: 0;
 }
 .carousel__slide:hover {
   border-color: var(--border2);
@@ -292,7 +301,6 @@ section { padding: 80px 0; }
   object-fit: cover; display: block;
 }
 
-/* placeholder cuando no hay imagen */
 .carousel__ph {
   display: flex; flex-direction: column;
   align-items: center; gap: 8px;
@@ -305,10 +313,10 @@ section { padding: 80px 0; }
   letter-spacing: 0.06em; text-transform: uppercase;
 }
 
-/* Botones prev/next */
+/* Botones prev/next — fuera del overflow:hidden gracias al padding */
 .carousel__btn {
   position: absolute; top: 50%; transform: translateY(-50%);
-  width: 36px; height: 36px; border-radius: 50%;
+  width: 34px; height: 34px; border-radius: 50%;
   background: var(--navy2); border: 1px solid var(--border);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--muted);
@@ -316,10 +324,10 @@ section { padding: 80px 0; }
   z-index: 2;
 }
 .carousel__btn:hover { background: var(--navy3); color: var(--white); border-color: var(--border2); }
-.carousel__btn svg { width: 16px; height: 16px; }
-.carousel__btn--prev { left: -18px; }
-.carousel__btn--next { right: -18px; }
-.carousel__btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.carousel__btn svg { width: 15px; height: 15px; }
+.carousel__btn--prev { left: 0; }
+.carousel__btn--next { right: 0; }
+.carousel__btn:disabled { opacity: 0.28; cursor: not-allowed; }
 
 /* Dots */
 .carousel__dots {
@@ -334,19 +342,17 @@ section { padding: 80px 0; }
 }
 .carousel__dot.active {
   background: var(--cyan);
-  transform: scale(1.3);
+  transform: scale(1.35);
 }
 
-/* Responsive carrusel */
+/* ── Responsive carrusel ── */
 @media (max-width: 768px) {
-  .carousel__slide { flex: 0 0 calc(50% - 6px); } /* 2 visibles */
-  .carousel__btn--prev { left: -14px; }
-  .carousel__btn--next { right: -14px; }
+  .carousel__slide { flex: 0 0 calc(50% - 6px); }
 }
 @media (max-width: 480px) {
-  .carousel__slide { flex: 0 0 85%; } /* 1 + peek del siguiente */
-  .carousel__btn--prev { left: -12px; }
-  .carousel__btn--next { right: -12px; }
+  /* Móvil: 1 slide + peek del siguiente para indicar que hay más */
+  .carousel__slide { flex: 0 0 calc(82% - 6px); }
+  .carousel { padding: 0 20px; }
 }
 
 /* ── QUÉ ES ── */
@@ -584,6 +590,7 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
 
     <!-- Título y descripción -->
     <div class="hero__text">
+      <div class="tag"><div class="tag-dot"></div>Proyecto educativo · Honduras</div>
       <h1 class="hero__title">El tutor que enseña a los niños a <em>escribir correctamente.</em></h1>
       <p class="hero__desc">
         TUTOR-BOT es un tutor inteligente que permite a los estudiantes practicar la escritura mediante herramientas auditivas y visuales, en un entorno seguro y sin publicidad.
@@ -643,7 +650,7 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
       ></video>
     </div>
     <p class="video-caption">
-      Diseño 3D del robot TUTOR-BOT 
+      Diseño 3D del robot TUTOR-BOT · Proyecto educativo · Honduras 2025
     </p>
 
     <!-- CARRUSEL DE FRAMES / IMÁGENES DEL ROBOT 3D -->
