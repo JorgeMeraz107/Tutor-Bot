@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>TUTOR-BOT — Proyecto Educativo</title>
 <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,33 +94,55 @@ section { padding: 80px 0; }
 .sh__sub { margin-top: 10px; font-size: 0.93rem; color: var(--muted); max-width: 520px; line-height: 1.7; }
 
 /* ── HERO ── */
-.hero { padding: 72px 0 80px; border-bottom: 1px solid var(--border); }
-.hero__inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
-.tag { display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-h);
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--cyan); margin-bottom: 20px; }
-.tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); flex-shrink: 0; }
+.hero {
+  padding: 64px 0 80px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero__text {
+  max-width: 680px;
+  margin-bottom: 48px;
+}
+
+.tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--f-h); font-size: 0.67rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 18px;
+}
+.tag-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cyan); flex-shrink: 0;
+}
+
+/* Tipografía calibrada — impactante pero legible */
 .hero__title {
-  font-family: var(--f-h); font-size: clamp(2.2rem, 5vw, 3.6rem);
-  font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin-bottom: 18px;
+  font-family: var(--f-h);
+  font-size: clamp(1.85rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--white);
 }
 .hero__title em { font-style: normal; color: var(--cyan); }
-.hero__desc { font-size: 0.97rem; color: var(--muted); line-height: 1.75; max-width: 440px; }
-.hero__facts { display: flex; gap: 0; margin-top: 44px; padding-top: 36px; border-top: 1px solid var(--border); }
-.fact { flex: 1; padding-right: 24px; }
-.fact + .fact { padding-left: 24px; border-left: 1px solid var(--border); }
-.fact__num { font-family: var(--f-h); font-size: 1.9rem; font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1; }
-.fact__label { font-size: 0.75rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 4px; }
 
-/* ── HERO VIDEO — profesional ── */
+.hero__desc {
+  margin-top: 16px;
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 520px;
+}
+
+/* ── HERO VIDEO — dentro del wrap, calidad preservada ── */
 .hero__video-wrap {
   position: relative;
-  border: 1px solid var(--border);
+  width: 100%;
+  aspect-ratio: 16/9;
   border-radius: 12px;
   overflow: hidden;
   background: var(--navy3);
-  aspect-ratio: 16/9;
-  width: 100%;
+  border: 1px solid var(--border);
   cursor: pointer;
 }
 .hero__video-wrap video {
@@ -129,100 +151,91 @@ section { padding: 80px 0; }
   display: block;
 }
 
-/* Overlay oscuro que aparece en hover */
+/* Overlay hover */
 .video-overlay {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: rgba(12, 21, 32, 0);
   transition: background 0.3s ease;
   pointer-events: none;
 }
 .hero__video-wrap:hover .video-overlay {
-  background: rgba(12, 21, 32, 0.25);
+  background: rgba(12, 21, 32, 0.18);
 }
 
 /* Botón de sonido — centrado, aparece en hover */
 .sound-btn {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
 }
-.hero__video-wrap:hover .sound-btn {
-  opacity: 1;
-}
-/* cuando ya está con sonido, el botón es pequeño abajo */
+.hero__video-wrap:hover .sound-btn { opacity: 1; }
+
+/* Sonido activo → esquina inferior derecha, siempre visible */
 .hero__video-wrap.has-sound .sound-btn {
   inset: auto;
-  bottom: 14px;
-  right: 14px;
-  display: flex;
+  bottom: 16px; right: 18px;
   opacity: 1;
+  pointer-events: all;
 }
 
 .sound-btn__pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(12, 21, 32, 0.82);
-  border: 1px solid rgba(255,255,255,0.1);
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(12, 21, 32, 0.80);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 50px;
-  padding: 10px 20px;
+  padding: 11px 22px;
   color: var(--white);
-  font-family: var(--f-h);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  backdrop-filter: blur(8px);
-  transition: background 0.2s, border-color 0.2s;
+  font-family: var(--f-h); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  cursor: pointer; outline: none;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
   pointer-events: all;
-  cursor: pointer;
-  border: none;
-  outline: none;
 }
 .sound-btn__pill:hover {
-  background: rgba(0, 196, 220, 0.85);
+  background: var(--cyan);
   color: var(--navy);
+  transform: scale(1.03);
 }
-.sound-btn__pill svg {
-  width: 15px; height: 15px; flex-shrink: 0;
-}
+.sound-btn__pill svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-/* estado: con sonido activo — pill pequeña esquina */
-.hero__video-wrap.has-sound .sound-btn {
-  inset: auto;
-  bottom: 14px;
-  right: 14px;
-  opacity: 1;
-  pointer-events: all;
-}
+/* Sonido activo — pill pequeña */
 .hero__video-wrap.has-sound .sound-btn__pill {
-  padding: 7px 14px;
+  padding: 8px 16px;
   font-size: 0.68rem;
-  background: rgba(0, 196, 220, 0.15);
-  border: 1px solid rgba(0, 196, 220, 0.3);
+  background: rgba(0, 196, 220, 0.13);
+  border-color: rgba(0, 196, 220, 0.32);
   color: var(--cyan);
 }
 .hero__video-wrap.has-sound .sound-btn__pill:hover {
-  background: rgba(0, 196, 220, 0.3);
+  background: rgba(0, 196, 220, 0.26);
+  color: var(--white);
+  transform: none;
 }
 
-/* ── VIDEO — SECCIÓN PRINCIPAL ── */
-#video { background: var(--navy2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+/* ── VIDEO — SECCIÓN DEDICADA ── */
+#video {
+  background: var(--navy2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
 .video-wrap {
-  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
-  background: var(--navy3); aspect-ratio: 16/9; position: relative;
-  max-width: 820px; margin: 0 auto;
+  /* full width dentro del wrap, sin max-width restrictivo */
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--navy3);
+  aspect-ratio: 16/9;
+  position: relative;
 }
 .video-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 .video-ph {
   position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px;
   background: var(--navy3);
 }
 .video-ph__btn {
@@ -231,8 +244,14 @@ section { padding: 80px 0; }
   display: flex; align-items: center; justify-content: center; color: var(--muted);
 }
 .video-ph__btn svg { width: 24px; height: 24px; }
-.video-ph__text { font-size: 0.8rem; color: var(--muted2); font-family: var(--f-h); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-.video-caption { margin-top: 20px; text-align: center; font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+.video-ph__text {
+  font-size: 0.8rem; color: var(--muted2); font-family: var(--f-h);
+  font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.video-caption {
+  margin-top: 20px; text-align: center;
+  font-size: 0.85rem; color: var(--muted); line-height: 1.7;
+}
 
 /* ── QUÉ ES ── */
 .que-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
@@ -348,28 +367,68 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
 .footer__copy { font-size: 0.78rem; color: var(--muted2); }
 .footer__tag { font-size: 0.72rem; font-family: var(--f-h); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted2); }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .hero__inner { grid-template-columns: 1fr; gap: 36px; }
-  .hero__video-wrap { max-width: 540px; margin: 0 auto; }
-  .que-grid { grid-template-columns: 1fr; gap: 40px; }
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+   • 1024px → laptops 13-14"
+   • 860px  → tablets landscape
+   • 768px  → hamburger
+   • 600px  → móviles Android grandes
+   • 400px  → móviles Android pequeños
+══════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .comp-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 860px) {
+  .que-grid { grid-template-columns: 1fr; gap: 36px; }
   .comp-grid { grid-template-columns: repeat(2, 1fr); }
   .gallery { grid-template-columns: repeat(2, 1fr); }
   .design-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
 @media (max-width: 768px) {
   .nav__links { display: none; }
   .nav__burger { display: block; }
-  section { padding: 60px 0; }
-  .hero__facts { flex-direction: column; gap: 16px; }
-  .fact + .fact { padding-left: 0; border-left: none; border-top: 1px solid var(--border); padding-top: 16px; }
-  .lec-row { grid-template-columns: 36px auto 1fr; }
+  section { padding: 56px 0; }
+  .lec-row { grid-template-columns: 36px auto 1fr; gap: 12px; padding: 16px; }
   .lec-badge { display: none; }
+  .footer__inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .footer__tag { display: none; }
 }
-@media (max-width: 520px) {
+
+@media (max-width: 600px) {
+  .wrap { padding: 0 16px; }
+  .nav__inner { padding: 0 16px; }
+  .hero { padding: 36px 0 44px; }
+  .hero__text { margin-bottom: 24px; }
+  .hero__title { font-size: clamp(1.55rem, 7vw, 1.95rem); }
+  .hero__desc { font-size: 0.87rem; margin-top: 12px; }
+  /* Botón sonido siempre visible en táctil */
+  .sound-btn {
+    inset: auto !important; bottom: 12px !important;
+    right: 12px !important; opacity: 1 !important;
+    pointer-events: all !important;
+  }
+  .sound-btn__pill { padding: 8px 14px; font-size: 0.68rem; }
+  section { padding: 44px 0; }
+  .sh__title { font-size: 1.38rem; }
+  .sh__sub { font-size: 0.87rem; }
   .comp-grid { grid-template-columns: 1fr; }
   .gallery { grid-template-columns: 1fr; }
   .design-grid { grid-template-columns: 1fr; }
+  .lec-num { display: none; }
+  .lec-row { padding: 13px 12px; }
+  .price-box { padding: 15px 16px; }
+  .video-caption { font-size: 0.78rem; }
+}
+
+@media (max-width: 400px) {
+  .hero__title { font-size: 1.45rem; }
+  .nav { height: 54px; }
+  .sh__title { font-size: 1.25rem; }
+  .sound-btn__pill { padding: 7px 12px; font-size: 0.64rem; }
+  .comp-card__img { aspect-ratio: 3/2; }
 }
 </style>
 
@@ -409,7 +468,7 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
 <header class="nav">
   <div class="nav__inner">
     <div class="nav__brand">
-     <img style="width: 220px;" src="assets/img/logo-nav2.png" alt="">
+     <img style="width: clamp(140px, 40vw, 220px); height: auto;" src="assets/img/logo-nav2.png" alt="TUTOR-BOT">
     </div>
     <ul class="nav__links">
       <li><a href="#video">Video</a></li>
@@ -426,45 +485,43 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
 <!-- ═══ HERO ═══════════════════════════════════════════════ -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero__inner">
-      <div>
-        <div class="tag"></div>
-        <h1 class="hero__title">El tutor que enseña a los niños a <em>escribir correctamente.</em></h1>
-        <p class="hero__desc" style="margin-top:20px;">
-          TUTOR-BOT es un tutor inteligente que permite a los estudiantes practicar la escritura mediante herramientas auditivas y visuales, en un entorno seguro y sin publicidad.
-        </p>
-      
-      </div>
-      <!-- VIDEO EN EL HERO: silencioso en autoplay, botón profesional para activar audio -->
-      <div class="hero__video-wrap" id="heroVideoWrap">
-        <video
-          id="heroVideo"
-          src="assets/img/video-tutor-bot.mp4"
-          muted
-          loop
-          playsinline
-          preload="none"
-          poster="assets/img/logo.png"
-        ></video>
 
-        <!-- Overlay oscuro sutil en hover -->
-        <div class="video-overlay"></div>
+    <!-- Título y descripción — sin cifras -->
+    <div class="hero__text">
+      <div class="tag"><div class="tag-dot"></div>Proyecto educativo · Honduras</div>
+      <h1 class="hero__title">El tutor que enseña a los niños a <em>escribir correctamente.</em></h1>
+      <p class="hero__desc">
+        TUTOR-BOT es un tutor inteligente que permite a los estudiantes practicar la escritura mediante herramientas auditivas y visuales, en un entorno seguro y sin publicidad.
+      </p>
+    </div>
 
-        <!-- Botón de sonido — centrado al hacer hover, pequeño en esquina al activar -->
-        <div class="sound-btn" id="soundBtn">
-          <button class="sound-btn__pill" id="soundPill" onclick="toggleSound()">
-            <!-- Ícono speaker muted -->
-            <svg id="soundIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-              <line x1="23" y1="9" x2="17" y2="15"/>
-              <line x1="17" y1="9" x2="23" y2="15"/>
-            </svg>
-            <span id="soundLabel">Activar sonido</span>
-          </button>
-        </div>
+    <!-- VIDEO — dentro del wrap, contenido, sin blur por sobreescalado -->
+    <div class="hero__video-wrap" id="heroVideoWrap">
+      <video
+        id="heroVideo"
+        src="assets/img/video-tutor-bot.mp4"
+        muted
+        loop
+        playsinline
+        preload="none"
+        poster="assets/img/logo.png"
+      ></video>
+
+      <div class="video-overlay"></div>
+
+      <div class="sound-btn" id="soundBtn">
+        <button class="sound-btn__pill" id="soundPill" onclick="toggleSound()">
+          <svg id="soundIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          <span id="soundLabel">Activar sonido</span>
+        </button>
       </div>
     </div>
+
   </div>
 </section>
 
