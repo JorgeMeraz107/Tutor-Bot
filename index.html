@@ -218,39 +218,64 @@ section { padding: 80px 0; }
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
-/* heading de sección video — más compacto que el resto */
 #video .sh { margin-bottom: 32px; }
 #video .sh__title { font-size: clamp(1.2rem, 2.2vw, 1.55rem); }
 #video .sh__sub { font-size: 0.88rem; margin-top: 8px; }
 
 .video-wrap {
   width: 100%;
-  /* Tope de altura: en laptop 13" (768px alto) no puede comerse la pantalla */
   max-height: 460px;
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
   background: var(--navy3);
   aspect-ratio: 16/9;
-  position: relative;
+  position: relative;  /* necesario para overlay y botón */
+  cursor: pointer;
 }
-.video-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
-.video-wrap video  { width: 100%; height: 100%; object-fit: cover; display: block; }
-.video-ph {
+.video-wrap video {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+/* Overlay hover — reutiliza la misma clase del hero */
+.video-wrap .video-overlay {
   position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 14px;
-  background: var(--navy3);
+  background: rgba(12, 21, 32, 0);
+  transition: background 0.3s ease;
+  pointer-events: none;
 }
-.video-ph__btn {
-  width: 56px; height: 56px; border-radius: 50%;
-  border: 1px solid var(--border2);
-  display: flex; align-items: center; justify-content: center; color: var(--muted);
+.video-wrap:hover .video-overlay {
+  background: rgba(12, 21, 32, 0.18);
 }
-.video-ph__btn svg { width: 22px; height: 22px; }
-.video-ph__text {
-  font-size: 0.78rem; color: var(--muted2); font-family: var(--f-h);
-  font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+/* Botón sonido dentro del video-wrap — reutiliza .sound-btn */
+.video-wrap .sound-btn {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.video-wrap:hover .sound-btn { opacity: 1; }
+.video-wrap.has-sound .sound-btn {
+  inset: auto;
+  bottom: 16px; right: 18px;
+  opacity: 1;
+  pointer-events: all;
+}
+.video-wrap.has-sound .sound-btn__pill {
+  padding: 8px 16px;
+  font-size: 0.68rem;
+  background: rgba(0, 196, 220, 0.13);
+  border-color: rgba(0, 196, 220, 0.32);
+  color: var(--cyan);
+}
+/* móvil — botón siempre visible */
+@media (max-width: 600px) {
+  .video-wrap .sound-btn {
+    inset: auto !important;
+    bottom: 12px !important; right: 12px !important;
+    opacity: 1 !important; pointer-events: all !important;
+  }
 }
 .video-caption {
   margin-top: 14px; text-align: center;
@@ -650,20 +675,33 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
       <h2 class="sh__title">Así lucirá TUTOR-BOT</h2>
       <p class="sh__sub">Animación 3D del diseño del robot — una vista previa de cómo se verá físicamente una vez fabricado con impresora 3D.</p>
     </div>
-    <div class="video-wrap">
+    <div class="video-wrap" id="sectionVideoWrap">
       <video
         id="sectionVideo"
         src="assets/img/previewRobot.mp4"
-        controls
         muted
         loop
         playsinline
         preload="none"
         poster="assets/img/logo.png"
       ></video>
+
+      <div class="video-overlay"></div>
+
+      <div class="sound-btn" id="soundBtnSection">
+        <button class="sound-btn__pill" id="soundPillSection" onclick="toggleSoundSection()">
+          <svg id="soundIconSection" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          <span id="soundLabelSection">Activar sonido</span>
+        </button>
+      </div>
     </div>
     <p class="video-caption">
-      Diseño 3D del robot TUTOR-BOT · Proyecto educativo · Honduras 2025
+      Diseño 3D del robot TUTOR-BOT 
     </p>
 
     <!-- CARRUSEL DE FRAMES / IMÁGENES DEL ROBOT 3D -->
@@ -1263,6 +1301,77 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
     buildDots();
     updateBtns();
     startAuto();
+
+  })();
+
+  /* ══════════════════════════════════════════════════════════
+     VIDEO SECCIÓN — mismo comportamiento que el hero:
+     autoplay silencioso, pause al salir del viewport,
+     botón de sonido idéntico
+  ══════════════════════════════════════════════════════════ */
+  (function () {
+    const wrap  = document.getElementById('sectionVideoWrap');
+    const video = document.getElementById('sectionVideo');
+    const pill  = document.getElementById('soundPillSection');
+    const icon  = document.getElementById('soundIconSection');
+    const label = document.getElementById('soundLabelSection');
+
+    if (!video || !wrap) return;
+
+    let loaded   = false;
+    let hasSound = false;
+
+    const SVG_MUTED = `
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>`;
+
+    const SVG_SOUND = `
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M19.07 4.93a10 10 0 010 14.14"/>
+      <path d="M15.54 8.46a5 5 0 010 7.07"/>`;
+
+    /* IntersectionObserver — lazy load + play/pause */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!loaded) { loaded = true; video.load(); }
+          video.muted = !hasSound;
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+          video.muted = true;
+        }
+      });
+    }, { threshold: 0.25 });
+
+    io.observe(video);
+
+    /* Botón sonido */
+    function toggleSoundSection() {
+      hasSound = !hasSound;
+      video.muted = !hasSound;
+      if (!video.paused) video.play().catch(() => {});
+
+      if (hasSound) {
+        wrap.classList.add('has-sound');
+        icon.innerHTML = SVG_SOUND;
+        label.textContent = 'Silenciar';
+      } else {
+        wrap.classList.remove('has-sound');
+        icon.innerHTML = SVG_MUTED;
+        label.textContent = 'Activar sonido';
+      }
+    }
+
+    window.toggleSoundSection = toggleSoundSection;
+
+    /* Tap en móvil */
+    wrap.addEventListener('click', function(e) {
+      if (pill && pill.contains(e.target)) return;
+      if (video.paused) video.play().catch(() => {});
+      else toggleSoundSection();
+    });
 
   })();
 </script>
