@@ -289,8 +289,8 @@ section { padding: 80px 0; }
   display: flex; align-items: center; justify-content: center;
   transition: border-color 0.2s, transform 0.2s;
   cursor: pointer;
-  /* Evita que el slide se encoja o crezca inesperadamente */
   min-width: 0;
+  position: relative;
 }
 .carousel__slide:hover {
   border-color: var(--border2);
@@ -299,6 +299,20 @@ section { padding: 80px 0; }
 .carousel__slide img {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
+}
+/* Etiqueta inferior de cada slide */
+.carousel__slide-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 6px 10px;
+  background: rgba(12, 21, 32, 0.82);
+  font-size: 0.7rem;
+  font-family: var(--f-h);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
 }
 
 .carousel__ph {
@@ -590,7 +604,6 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
 
     <!-- Título y descripción -->
     <div class="hero__text">
-      <div class="tag"><div class="tag-dot"></div>Proyecto educativo · Honduras</div>
       <h1 class="hero__title">El tutor que enseña a los niños a <em>escribir correctamente.</em></h1>
       <p class="hero__desc">
         TUTOR-BOT es un tutor inteligente que permite a los estudiantes practicar la escritura mediante herramientas auditivas y visuales, en un entorno seguro y sin publicidad.
@@ -656,21 +669,37 @@ footer { padding: 36px 0; border-top: 1px solid var(--border); }
     <!-- CARRUSEL DE FRAMES / IMÁGENES DEL ROBOT 3D -->
     <div class="carousel" id="robotCarousel">
       <div class="carousel__track" id="carouselTrack">
-        <!--
-          ════════════════════════════════════════════════
-          Agrega aquí tus imágenes/frames del robot 3D.
-          Ejemplo:
-          <div class="carousel__slide">
-            <img src="assets/img/robot-frame-1.jpg" alt="Robot 3D vista frontal" loading="lazy">
-          </div>
-          ════════════════════════════════════════════════
-        -->
-        <div class="carousel__slide"><div class="carousel__ph"><svg><use href="#ic-image"/></svg><span>Vista frontal</span></div></div>
-        <div class="carousel__slide"><div class="carousel__ph"><svg><use href="#ic-image"/></svg><span>Vista lateral</span></div></div>
-        <div class="carousel__slide"><div class="carousel__ph"><svg><use href="#ic-image"/></svg><span>Vista posterior</span></div></div>
-        <div class="carousel__slide"><div class="carousel__ph"><svg><use href="#ic-image"/></svg><span>Detalle cabeza</span></div></div>
-        <div class="carousel__slide"><div class="carousel__ph"><svg><use href="#ic-image"/></svg><span>Detalle cuerpo</span></div></div>
-        <div class="carousel__slide"><div class="carousel__ph"><svg><use href="#ic-image"/></svg><span>Vista 3/4</span></div></div>
+
+        <div class="carousel__slide">
+          <img src="assets/img/vista%20frontal.png" alt="Vista frontal del robot" loading="lazy">
+          <div class="carousel__slide-label">Vista frontal</div>
+        </div>
+
+        <div class="carousel__slide">
+          <img src="assets/img/Vista%20Superior.png" alt="Vista superior del robot" loading="lazy">
+          <div class="carousel__slide-label">Vista superior</div>
+        </div>
+
+        <div class="carousel__slide">
+          <img src="assets/img/Perpectiva%20Lateral%20Izquierda.png" alt="Perspectiva lateral izquierda" loading="lazy">
+          <div class="carousel__slide-label">Lateral izquierda</div>
+        </div>
+
+        <div class="carousel__slide">
+          <img src="assets/img/Perspectiva%20Lateral%20Derecha.png" alt="Perspectiva lateral derecha" loading="lazy">
+          <div class="carousel__slide-label">Lateral derecha</div>
+        </div>
+
+        <div class="carousel__slide">
+          <img src="assets/img/Perpectiva%20Lateral%20Izquierda.png" alt="Detalle cuerpo" loading="lazy">
+          <div class="carousel__slide-label">Detalle cuerpo</div>
+        </div>
+
+        <div class="carousel__slide">
+          <img src="assets/img/vista%20frontal.png" alt="Vista 3/4 del robot" loading="lazy">
+          <div class="carousel__slide-label">Vista 3/4</div>
+        </div>
+
       </div>
 
       <!-- Controles -->
